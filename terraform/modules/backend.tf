@@ -4,7 +4,7 @@ resource "aws_iam_user" "terraform_user" {
 }
 
 # Attach AdministratorAccess policy to the IAM user
-resource "aws_iam_user_policy_attachment" "terraform_user_admin access" {
+resource "aws_iam_user_policy_attachment" "terraform_user_admin_access" {
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
   user       = aws_iam_user.terraform_user.id
 }
@@ -14,7 +14,7 @@ resource "aws_s3_bucket" "terraform_state_bucket" {
   bucket = var.bucket_name
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 
   tags = {
@@ -27,7 +27,7 @@ resource "aws_s3_bucket_versioning" "versioning_enabled" {
   bucket = aws_s3_bucket.terraform_state_bucket.id
 
   versioning_configuration {
-    status = "enabled"
+    status = "Enabled"
   }
 }
 
@@ -70,7 +70,7 @@ resource "aws_dynamodb_table" "state_lock_table" {
   }
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 
   tags = {
